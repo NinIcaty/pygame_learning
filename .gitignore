@@ -1,0 +1,8 @@
+# Ignore all python cache files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Ignore PyCharm project settings folder
+.idea/
+./build.py
