@@ -19,3 +19,5 @@ Top Down  game Framework is a random game based of my "coreEngine" I'm tryna mak
 - Made ``RigidBody`` Require width and height 
 ### Problems
 - Tiles do not appear rotated 
+## Plans
+- Improve maps, add layer / collision support, death zones and object spawn areas 
