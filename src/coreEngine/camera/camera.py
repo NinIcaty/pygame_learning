@@ -73,10 +73,11 @@ class Camera:
             int(self.offset_x),
             int(self.offset_y)
         )
-    def CameraDebugDeadZone(self):
+    def CameraDebugDeadZone(self,screen):
+
         pg.draw.rect(
             screen,
             (255, 0, 0),
-            camera.dead_zone,
+            self.dead_zone,
             2
         )

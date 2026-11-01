@@ -8,10 +8,10 @@ class Coin(RigidBody):
         self.x = x
         self.y = y
         self.color = (255,255,0)
-        self.height = 100
-        self.width = 100
+        self.height = 24
+        self.width = 24
         #RigidBody init
-        super().__init__(x,y,0,0,0,0)
+        super().__init__(x,y,0,0,0,self.width,self.height)
     def coinRuntime(self,gameManager):
 
         #screen = pg.display.get_surface()

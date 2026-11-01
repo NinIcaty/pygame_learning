@@ -10,12 +10,11 @@ class Keybinds:
 
 class Player(RigidBody):
     def __init__(self,x,y):
-        self.height = 100
-        self.width = 100
+        self.height = 32
+        self.width = 32
         #Movement
-        self.gravity = 0
         self.friction = 0.80
-        self.max_speed = 10
+        self.max_speed = 7.5
         self.acceleration = 1.5
         self.dir_x = 0
         self.dir_y = 0
@@ -30,10 +29,10 @@ class Player(RigidBody):
 
         self.spawn = (x,y)
         #rigidBody init
-        super().__init__(x,y,self.gravity,self.friction,self.max_speed,self.acceleration)
+        super().__init__(x,y,self.friction,self.max_speed,self.acceleration,self.width,self.height,doesCollision=True)
 
 
-    def playerRuntime(self, other_mesh_bodies: list, dt):
+    def playerRuntime(self, dt):
         screen = pg.display.get_surface()
 
         held_keys = pg.key.get_pressed()
@@ -42,17 +41,17 @@ class Player(RigidBody):
         self.dir_y = 0
 
         # Horizontal movement
-        if held_keys[self.keybinds.move_left]: self.dir_x -= 1
-        if held_keys[self.keybinds.move_right]: self.dir_x += 1
-        if held_keys[self.keybinds.move_up]: self.dir_y -= 1
-        if held_keys[self.keybinds.move_down]: self.dir_y += 1
+        if held_keys[self.keybinds.move_left]: self.dir_x -= .25
+        if held_keys[self.keybinds.move_right]: self.dir_x += .25
+        if held_keys[self.keybinds.move_up]: self.dir_y -= .25
+        if held_keys[self.keybinds.move_down]: self.dir_y += .25
         # Jump only on a fresh key press
 
 
 
         # Update physics
         self.movement()
-        self.collision(other_mesh_bodies)
+        self.collision()
 
         #self.preventLeavingScreen(screen.get_width(),screen.get_height(),(self.spawn[0],self.spawn[1]))
 
