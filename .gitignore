@@ -5,4 +5,4 @@ __pycache__/
 
 # Ignore PyCharm project settings folder
 .idea/
-./build.py
+build.py

@@ -70,6 +70,8 @@ def build(source, metadata_file, output_dir):
     metadata_file = pathlib.Path(metadata_file).resolve()
     output_dir = pathlib.Path(output_dir).resolve()
 
+    requirements_file = source / "requirements.txt"
+
     if not source.is_dir():
         raise SystemExit(f"Source folder not found: {source}")
 
@@ -79,6 +81,11 @@ def build(source, metadata_file, output_dir):
     if not metadata_file.exists():
         raise SystemExit(f"Metadata not found: {metadata_file}")
 
+    if not requirements_file.exists():
+        raise SystemExit(
+            f"Requirements file not found: {requirements_file}"
+        )
+
     # Read metadata
     with metadata_file.open(encoding="utf-8") as f:
         metadata = json.load(f)
@@ -86,7 +93,6 @@ def build(source, metadata_file, output_dir):
     version = safe_name(metadata["version"])
     build_number = safe_name(metadata["build"])
 
-    # Automatically generate filename
     filename = f"topDown-{version}-{build_number}.pyz"
     output = output_dir / filename
 
@@ -100,11 +106,11 @@ def build(source, metadata_file, output_dir):
         # Copy source
         shutil.copytree(source, temp / "src")
 
-        # Install pygame into bundle
+        # Install all requirements into bundle
         vendor = temp / "vendor"
         vendor.mkdir()
 
-        print("\n[1/3] Bundling pygame...")
+        print("\n[1/3] Bundling requirements...")
 
         subprocess.run(
             [
@@ -115,7 +121,8 @@ def build(source, metadata_file, output_dir):
                 "--upgrade",
                 "--target",
                 str(vendor),
-                "pygame",
+                "-r",
+                str(requirements_file),
             ],
             check=True,
         )
@@ -123,7 +130,10 @@ def build(source, metadata_file, output_dir):
         # Add bootstrapper
         print("\n[2/3] Adding bootstrapper...")
 
-        (temp / "__main__.py").write_text(BOOTSTRAP)
+        (temp / "__main__.py").write_text(
+            BOOTSTRAP,
+            encoding="utf-8"
+        )
 
         # Create archive
         print("\n[3/3] Creating PYZ...")
@@ -137,7 +147,7 @@ def build(source, metadata_file, output_dir):
             compressed=True,
         )
 
-    print(f"\nBuild successful!")
+    print("\nBuild successful!")
     print(f"Output: {output}")
 
 
@@ -154,7 +164,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--metadata",
-        default=str(root /"src"/ "metadata.json")
+        default=str(root / "src" / "metadata.json")
     )
 
     parser.add_argument(

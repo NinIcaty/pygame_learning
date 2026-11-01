@@ -22,7 +22,7 @@ screen_height = pg.display.Info().current_h
 
 ####TEST
 
-map1 = Map("resources/map.tmx")
+map1 = Map("src/resources/map.tmx")
 ####END
 # Game loop
 screen.fill((0, 0, 0))
@@ -47,6 +47,7 @@ game_manager = GameManager(player,map1.map_width,map1.map_height,dt)
 camera = Camera(screen_width, screen_height, game_manager.map_width, game_manager.map_height)
 player_HUD = PlayerHUD(game_manager,100,50)
 
+print(RigidBody.CollisionBodies)
 def main():
     running = True
 

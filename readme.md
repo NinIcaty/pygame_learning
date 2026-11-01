@@ -2,8 +2,7 @@
 version: a_0.2
 ## About
 
-Top Down  game Framework is a random game based of my "coreEngine" I'm tryna make for my personal pygame projects, for how to use got to [Basic Guide](docs/basic.md)
-
+Top Down  game Framework is a random game based of my "coreEngine" I'm tryna make for my personal pygame projects, for how to use got to [Basic Guide](docs/basic.md). Run the game from the parent folder of src if you are not using the pyz.
 ## Changelog
 
 ### Added
