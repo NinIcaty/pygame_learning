@@ -1,13 +1,19 @@
 import pygame as pg
+
+
+
 class Camera:
-    def __init__(self, width, height, map_width, map_height):
+    def __init__(self, width, height, game_manager):
         self.camera = pg.Rect(0, 0, width, height)
+
+        self.game_manager = game_manager
+
 
         self.width = width
         self.height = height
 
-        self.map_width = map_width
-        self.map_height = map_height
+        self.map_width = game_manager.map_width
+        self.map_height = game_manager.map_height
 
         # Dead zone (area where camera doesn't move)
         self.dead_zone = pg.Rect(
@@ -22,6 +28,8 @@ class Camera:
         self.offset_y = 0.0
 
         self.speed_multiplier = 5.0
+        #SET AS GAMEMANAGER CAMERA
+        self.game_manager.camera = self
 
     def apply(self, entity):
         return entity.rect.move(

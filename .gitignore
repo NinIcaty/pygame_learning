@@ -5,4 +5,10 @@ __pycache__/
 
 # Ignore PyCharm project settings folder
 .idea/
-build.py
+buildLegacy.py
+build.sh
+build
+*.spec
+dist
+build/*
+/dist/*

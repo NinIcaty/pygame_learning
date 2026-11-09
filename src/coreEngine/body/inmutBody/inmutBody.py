@@ -1,7 +1,7 @@
-from coreEngine.rigidBody.rigidBody import RigidBody
+from coreEngine.body.basicBody import BasicBody
 
 
-class InmutBody(RigidBody):
+class InmutBody(BasicBody):
     InmutBodies = []
     def __init__(self,x: float, y: float,friction: float,max_speed: float, acceleration: float,width: float,height: float):
         #InmutBody.InmutBodies.append(self)#add to list
@@ -16,5 +16,5 @@ class InmutBody(RigidBody):
         super().__init__(x,y,friction,max_speed,acceleration,self.width,self.height,doesCollision=True)
 
     def InmutRuntime(self):
-        self.objectRuntime()
+        self.basicBodyRuntime()
         self.collision()

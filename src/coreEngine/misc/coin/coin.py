@@ -1,26 +1,28 @@
 import random
 import pygame as pg
-
-from coreEngine.rigidBody.rigidBody import RigidBody
-
-class Coin(RigidBody):
-    def __init__(self,x,y):
+from coreEngine.entity.entity import Entity
+class Coin(Entity):
+    def __init__(self,x,y,game_manager):
+        self.game_manager = game_manager
         self.x = x
         self.y = y
         self.color = (255,255,0)
         self.height = 24
         self.width = 24
-        #RigidBody init
-        super().__init__(x,y,0,0,0,self.width,self.height)
-    def coinRuntime(self,gameManager):
+        #basicBody init
+        self.isVisible = True
+        super().__init__(x,y,0,0,0,self.width,self.height,self.game_manager,isVisible=self.isVisible)
+        self.updateBody()
+
+    def coinRuntime(self):
 
         #screen = pg.display.get_surface()
         ##screen_width = screen.get_width()
         #screen_height = screen.get_height()
 
-        self.objectRuntime()
-        self.preventLeavingArea(gameManager.map_width, gameManager.map_height,(random.randint(0, gameManager.map_width),random.randint(0, gameManager.map_height)))
-        if self.rect.colliderect(gameManager.player.rect):
-            gameManager.player.coin_count += 1
-            self.x = random.randint(0,gameManager.map_width-1)
-            self.y = random.randint(0,gameManager.map_height-1)
+        self.EntityRuntime(self.game_manager)
+        self.preventLeavingArea(self.game_manager.map_width, self.game_manager.map_height,(random.randint(0, self.game_manager.map_width),random.randint(0, self.game_manager.map_height)))
+        if self.rect.colliderect(self.game_manager.player.rect):
+            self.game_manager.player.coin_count += 1
+            self.x = random.randint(0,self.game_manager.map_width-1)
+            self.y = random.randint(0,self.game_manager.map_height-1)
