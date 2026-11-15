@@ -1,5 +1,5 @@
 # Top Down Game Framework (TDGF)
-version: a_0.4
+version: a_0.3.1
 ## About
 
 Top Down  game Framework is a random game based of my "coreEngine" I'm tryna make for my personal pygame projects, for how to use got to [Basic Guide](docs/basic.md). Run the game from the parent folder of src if you are not using the pyz.
@@ -17,6 +17,4 @@ Top Down  game Framework is a random game based of my "coreEngine" I'm tryna mak
 - Removed ImutBody
 ## Plans
 - Improve maps, add layer / collision support, death zones and object spawn areas 
-- Make Entity more defined
 
-IBT - 1
