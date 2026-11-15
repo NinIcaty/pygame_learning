@@ -1,6 +1,6 @@
 # Basic Guide to coreEngine
 
-## basicBody
+## BasicBody
 basicBody is the MOST important class in the full thing, most classes will be based of this. basicBody has many functions that are not called but can be called in the object's runtime (generally done in a custom class's runtime).
 
 It has the list of all collision bodies called ``basicBody.CollisionBodies``

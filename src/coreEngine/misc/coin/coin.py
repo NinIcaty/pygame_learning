@@ -20,7 +20,7 @@ class Coin(Entity):
         ##screen_width = screen.get_width()
         #screen_height = screen.get_height()
 
-        self.EntityRuntime(self.game_manager)
+        self.EntityRuntime()
         self.preventLeavingArea(self.game_manager.map_width, self.game_manager.map_height,(random.randint(0, self.game_manager.map_width),random.randint(0, self.game_manager.map_height)))
         if self.rect.colliderect(self.game_manager.player.rect):
             self.game_manager.player.coin_count += 1

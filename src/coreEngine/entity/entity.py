@@ -26,9 +26,11 @@ class Entity(BasicBody):
         self.doesCollision = doesCollision
         self.isVisible = isVisible
         self.Image = Image
-        #if self.Image != False:
-            #Change later add image support
-         #   pass
+        #Image loading stuff like direction facing etc
+        self.rect_zoom = 1.0
+        self.base_width = width
+        self.base_height = height
+        self.facing_angle = 0
 
         super().__init__(x,y,friction,max_speed,acceleration,self.width,self.height,doesCollision=self.doesCollision,doBodyUpdates=True)
     def movement(self):
@@ -49,14 +51,52 @@ class Entity(BasicBody):
         self.x += self.velocity[0]
         self.y += self.velocity[1]
         self.updateBody()
+
     def draw(self):
-        #if self.Image is not None:
-            #Change later, make load image
-        #    pg.draw.rect(self.game_manager.screen, self.color, self.game_manager.camera.apply(self))
-        #else:
-        pg.draw.rect(self.game_manager.screen, self.color, self.game_manager.camera.apply(self))
-    def EntityRuntime(self,game_manager):
-        if self.isVisible == True: self.draw() #DRAW
+        zoom = self.rect_zoom
+
+        if self.Image is not None:
+            # Scale image
+            render_width = int(self.base_width * zoom)
+            render_height = int(self.base_height * zoom)
+
+            scaled_image = pg.transform.scale(
+                self.Image,
+                (render_width, render_height)
+            )
+
+            # Rotate image
+            rotated_image = pg.transform.rotate(
+                scaled_image,
+                self.facing_angle
+            )
+
+            # Get actual image dimensions (including rotation)
+            image_rect = rotated_image.get_rect()
+
+            # Update entity dimensions to match image
+            self.width = image_rect.width
+            self.height = image_rect.height
+
+            self.updateBody()
+
+            # Position image at entity center
+            camera_pos = self.game_manager.camera.apply(self)
+            image_rect.center = camera_pos.center
+
+            self.game_manager.screen.blit(rotated_image, image_rect)
+
+        else:
+            camera_pos = self.game_manager.camera.apply(self)
+
+            self.width = int(self.base_width * zoom)
+            self.height = int(self.base_height * zoom)
+
+            self.updateBody()
+            pg.draw.rect(self.game_manager.screen, self.color, camera_pos)
+    def EntityRuntime(self):
+        self.movement()
+        if self.isVisible: self.draw() #DRAW
         self.basicBodyRuntime()
         self.updateBody()
     #Optional defs to be called in other classes

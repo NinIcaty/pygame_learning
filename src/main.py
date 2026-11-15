@@ -1,19 +1,23 @@
 import pygame as pg
 import random
 import argparse
+import os
+
 # coreEngine
 from coreEngine.body.basicBody import BasicBody
 from coreEngine.camera.camera import Camera
 from coreEngine.player.player import Player
 from coreEngine.misc.coin.coin import Coin
-from coreEngine.body.inmutBody.inmutBody import InmutBody
-from coreEngine.hud.playerHud.playerHud import PlayerHUD
+from coreEngine.player.playerHud.playerHud import PlayerHUD
 from coreEngine.map.map import Map
-import os
-#Testing ARGS
+from coreEngine.misc.bullet import Bullet
+#ARGS
 parser = argparse.ArgumentParser(description="A topDown shooter Engine made with pygame")
 parser.add_argument("-t", "--testrun", action="store_true", help="Test Run, for non built versions")
+parser.add_argument("-d", "--debug", action="store_true", help="For debugging at the moment only turns on the camera overlay") #update msg
+
 args = parser.parse_args()
+
 # Initialize Pygame stuff
 pg.init()
 font = pg.font.Font(None, 36)
@@ -45,13 +49,17 @@ pg.display.flip()
 map1 = Map(map1_path)
 class GameManager:
     def __init__(self,screen,map_width,map_height,dt):
-        #self.imutBodies = InmutBody.InmutBodies
+        global args
         self.map_height = map_height
         self.map_width = map_width
         self.dt = dt
         self.map_width = map_width
         self.map_height = map_height
         self.screen = screen
+        self.launch_args = args
+        self.base_dir = os.path.dirname(os.path.abspath(__file__))
+        if args.debug:
+            self.debugMode = True
         ######################
         #SETTING GAME MANAGER#
         ######################
@@ -61,7 +69,7 @@ dt = clock
 game_manager = GameManager(screen,map1.map_width,map1.map_height,dt)
 player = Player(800, 500,game_manager)
 camera = Camera(screen_width, screen_height, game_manager)
-test_body = InmutBody(800, 600,  0, 0, 0, 100 ,100)
+test_body = BasicBody(800, 600,  0, 0, 0, 100 ,100,doesCollision=True)
 player.coin_count = 0
 coin = Coin(random.randint(0, screen_width - 1),random.randint(0, screen_height - 1),game_manager)
 player_HUD = PlayerHUD(game_manager,100,50)
@@ -95,6 +103,9 @@ def main():
         screen.blit(map1.map_surface, (int(camera.offset_x), int(camera.offset_y)))  # MAP DRAW
 
         # Runtimes
+        #Bullet logic
+        for bullet in Bullet.Bullets:
+            bullet.bulletRuntime()
         player.playerRuntime()
         coin.coinRuntime()
         pg.draw.rect(screen, (35, 33, 73), camera.apply(test_body)) #Test body
@@ -103,7 +114,7 @@ def main():
         player.preventLeavingArea(game_manager.map_width,game_manager.map_height,player.spawn)
         player_HUD.draw(screen)
         #Camera dead zone
-        camera.CameraDebugDeadZone(screen)
+        if game_manager.debugMode: camera.CameraDebugDeadZone(screen)
         pg.display.flip()
 
 main()
